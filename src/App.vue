@@ -1,55 +1,81 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+    <v-app-bar app color="primary" dark>
+      <router-link style="color: white" to="/">Home</router-link> |
+      <router-link style="color: white" to="/about">About</router-link>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+      <!-- menu -->
+      <v-menu 
+        :close-on-content-click="false"
+        transition="slide-y-transition"
+        bottom 
+        left
+        offset-y
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+        <template v-slot:activator="{ on: menu, attrs }">
+          <v-tooltip left>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="{ ...tooltip, ...menu }"
+              >
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <span>Authentication</span>
+          </v-tooltip>
+        </template>
+
+        <v-list dense>
+          <v-subheader>AUTHENTICATION</v-subheader>
+          <v-list-item-group
+            v-model="selectedItem"
+            color="primary"
+          >
+            <v-list-item @click="authenticate(false)">
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>User</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item @click="authenticate(true)">
+              <v-list-item-icon>
+                <v-icon>mdi-account-key</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Admin</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
+
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import { mapActions } from "vuex"
 
 export default {
-  name: 'App',
+  name: "App",
 
   data: () => ({
-    //
+    selectedItem: 0,
   }),
+  methods: {
+    ...mapActions(["authenticate"]),
+  }
 };
 </script>
