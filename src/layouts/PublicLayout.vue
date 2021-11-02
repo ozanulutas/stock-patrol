@@ -1,13 +1,19 @@
 <template>
-  <div>
-    <h1>Public</h1>
+  <v-container>
+    <SearchForm />
+    
     <router-view></router-view>
-  </div>
+  </v-container>
 </template>
 
 <script>
+import SearchForm from "@/components/SearchForm"
+
 export default {
   name: "PublicLayout",
+  components: {
+    SearchForm,
+  }
 }
 </script>
 

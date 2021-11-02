@@ -8,8 +8,13 @@ export default [
     children: [
       {
         path: '/',
-        name: 'Home',
-        component: () => import('../views/Home.vue')
+        name: 'HomePage',
+        component: () => import('../views/HomePage.vue')
+      },
+      {
+        path: '/symbol/:symbol',
+        name: 'SymbolPage',
+        component: () => import('../views/SymbolPage.vue')
       },
     ]
   },
@@ -19,9 +24,9 @@ export default [
     meta: { requiresAuth: true },
     children: [
       {
-        path: '/about',
-        name: 'About',
-        component: () => import('../views/About.vue'),
+        path: '/admin',
+        name: 'AdminPage',
+        component: () => import('../views/AdminPage.vue'),
       }
     ]
   },

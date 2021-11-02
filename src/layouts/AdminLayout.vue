@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <h1>Amin</h1>
+  <v-container>
     <router-view></router-view>
-  </div>
+  </v-container>
 </template>
 
 <script>
