@@ -3,7 +3,7 @@
     ref="form"
     v-model="valid"
     lazy-validation
-    @submit.prevent="search()"
+    @submit.prevent="searchSymbols()"
   >
     <v-row align="center">
       <v-col>
@@ -63,7 +63,7 @@ export default {
     // if there is company url query, searches symbol by company name on refresh
     if(company) {
       this.form.company = company
-      this.findSymbols(this.form.company)
+      // this.findSymbols(this.form.company) <------- *** daha sonra aç ***
     }
   },
   methods: {
@@ -71,7 +71,7 @@ export default {
 
     // searches the company symbol
     // and sets the url query by search param
-    search() {
+    searchSymbols() {
       if(this.$refs.form.validate()) { // checks the validity of the form
         console.log("submitted");
         
@@ -83,12 +83,6 @@ export default {
               company: this.form.company,
             }
           })
-          // this.$router.push({
-          //   name: "SymbolPage",
-          //   params: {
-          //     symbol: this.form.symbol,
-          //   }
-          // })
         })
 
       }

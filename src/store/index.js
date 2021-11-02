@@ -8,7 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isAuth: false,  // indicates whether the user is authenticated or not
-    symbols: [] // symbol search results
+    symbols: [], // symbol search results
+    timeSeries: {}, // time series for a symbol
   },
   mutations: {
     SET_IS_AUTH(state, payload) { 
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     },
     SET_SYMBOLS(state, payload) { 
       state.symbols = payload;
+    },
+    SET_TIME_SERIES(state, payload) { 
+      state.timeSeries = payload;
     },
   },
   actions: {
@@ -34,6 +38,23 @@ export default new Vuex.Store({
           console.log(resp.data);
           if(resp.status === 200) {
             commit("SET_SYMBOLS", resp.data.bestMatches)
+          }
+        })
+        .catch(err => console.log(err))
+    },
+    fetchTimeSeries({ commit }, payload) { // fetches time series by symbol and interval
+      return axios.get("/query", {
+        params: { 
+          symbol: payload.symbol,
+          function: `TIME_SERIES_${payload.interval}`, 
+          outputsize: 'compact',
+          datatype: 'json'
+        }
+      })
+        .then(resp => {
+          console.log(resp.data);
+          if(resp.status === 200) {
+            commit("SET_TIME_SERIES", resp.data)
           }
         })
         .catch(err => console.log(err))

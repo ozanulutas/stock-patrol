@@ -9,11 +9,11 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            
             depressed
             color="primary"
             v-bind="attrs"
             v-on="on"
+            @click="searchTimeSeries(symbol['1. symbol'])"
           >
             {{ symbol["1. symbol"] }}
           </v-btn>
@@ -25,12 +25,31 @@
 </template>
 
 <script>
-import { mapState } from "vuex"
+import { mapState, mapActions } from "vuex"
 
 export default {
   name: "SearchResults",
   computed: {
     ...mapState(["symbols"]),
+  },
+  methods: {
+    ...mapActions(["fetchTimeSeries"]),
+    
+    searchTimeSeries(symbol) {
+
+      this.fetchTimeSeries({
+        symbol,
+        interval: "DAILY"
+      }).then(() => {
+        this.$router.push({
+          name: "SymbolPage",
+          params: {
+            symbol,
+          }
+        })
+      })
+
+    },
   }
 }
 </script>
