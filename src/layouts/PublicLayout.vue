@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <SearchForm />
+    <SearchResults />
     
     <router-view></router-view>
   </v-container>
@@ -8,11 +9,13 @@
 
 <script>
 import SearchForm from "@/components/SearchForm"
+import SearchResults from "@/components/SearchResults"
 
 export default {
   name: "PublicLayout",
   components: {
     SearchForm,
+    SearchResults
   }
 }
 </script>

@@ -3,20 +3,20 @@
     ref="form"
     v-model="valid"
     lazy-validation
-    @submit.prevent="submit()"
+    @submit.prevent="search()"
   >
     <v-row align="center">
       <v-col>
         <v-text-field
-          v-model="form.symbol"
+          v-model="form.company"
           :rules="[v => !!v || 'Tihs field is required']"
-          label="Symbol"
+          label="company"
           clearable
         ></v-text-field>
         <!-- <v-autocomplete
-          v-model="form.symbol"
+          v-model="form.company"
           :rules="[v => !!v || 'Tihs field is required']"
-          label="Symbol"
+          label="company"
           rounded
           solo
           clearable
@@ -45,26 +45,52 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
+
 export default {
   name: "SearchForm",
   data() {
     return {
       form: { // form data to submit
-        symbol: "",
+        company: "",
       },
       valid: true, // form's validity state
     }
   },
+  created() {
+    const company = this.$route.query.company
+
+    // if there is company url query, searches symbol by company name on refresh
+    if(company) {
+      this.form.company = company
+      this.findSymbols(this.form.company)
+    }
+  },
   methods: {
-    submit() {
+    ...mapActions(["findSymbols"]),
+
+    // searches the company symbol
+    // and sets the url query by search param
+    search() {
       if(this.$refs.form.validate()) { // checks the validity of the form
         console.log("submitted");
-        this.$router.push({
-          name: "SymbolPage",
-          params: {
-            symbol: this.form.symbol,
-          }
+        
+        // finds the symbols bu company name
+        this.findSymbols(this.form.company).then(() => {
+          this.$router.push({
+            path: "/",
+            query: {
+              company: this.form.company,
+            }
+          })
+          // this.$router.push({
+          //   name: "SymbolPage",
+          //   params: {
+          //     symbol: this.form.symbol,
+          //   }
+          // })
         })
+
       }
     }
   }
