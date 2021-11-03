@@ -48,7 +48,7 @@ export default new Vuex.Store({
           symbol: payload.symbol,
           function: `TIME_SERIES_${payload.interval}`, 
           outputsize: 'compact',
-          datatype: 'json'
+          datatype: 'csv'
         }
       })
         .then(resp => {
