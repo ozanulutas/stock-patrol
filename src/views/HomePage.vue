@@ -5,20 +5,23 @@
 </template>
 
 <script>
-import data from "@/assets/test-series.json"
+import data from "@/assets/test-series.json";
+import axios from "axios";
 
 export default {
   name: "HomePage",
   data() {
     return {
       data,
-    }
+    };
   },
   mounted() {
-    // const dat = data["Time Series (Daily)"].forEach(() => {
-      
-    // })
-    // console.log(dat);
-  }
+    axios.post("http://localhost:8099", JSON.stringify({
+      name: "ozan",
+    }))
+      // .then(resp => resp.json())
+      .then(resp => console.log(resp))
+      .catch(err => console.log(err))
+  },
 };
 </script>
