@@ -7,9 +7,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-// import * as d3 from "d3";
-// import {format} from "d3-format";
+import { mapState, mapGetters } from "vuex";
+// import * as d3 from "d3"
 import aapl from "@/assets/aapl.json";
 
 export default {
@@ -18,27 +17,33 @@ export default {
     return {
       aapl,
       chart: null,
-      // format
     };
   },
   computed: {
     ...mapState(["timeSeries"]),
+    ...mapGetters(["getFormattedTimeSeries"]),
   },
-//   mounted() {
+  mounted() {
+    console.log(this.getFormattedTimeSeries);
+    console.log(this.timeSeries);
 //     let width = 800;
 //     let height = 600;
 //     let margin = { top: 20, right: 30, bottom: 30, left: 40 };
 //     let parseDate = d3.utcParse("%Y-%m-%d");
 
 //     let data = d3
-//       .csvParse(this.timeSeries, function (d) {
-//         const date = parseDate(d["timestamp"]);
+//       .csvParse(this.aapl, function (d) {
+//         const date = parseDate(d["Date"]);
 //         return {
 //           date,
-//           high: +d["high"],
-//           low: +d["low"],
-//           open: +d["open"],
-//           close: +d["close"],
+//           high: +d["High"],
+//           low: +d["Low"],
+//           open: +d["Open"],
+//           close: +d["Close"],
+//           // high: +d["high"],
+//           // low: +d["low"],
+//           // open: +d["open"],
+//           // close: +d["close"],
 //         };
 //       })
 //       .slice(-120);
@@ -141,7 +146,7 @@ export default {
 // Low: ${formatValue(d.low)}
 // High: ${formatValue(d.high)}`
 //     );
-//   },
+  },
   methods: {},
 };
 </script>

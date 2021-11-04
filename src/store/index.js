@@ -12,13 +12,13 @@ export default new Vuex.Store({
     timeSeries: {}, // time series for a symbol
   },
   mutations: {
-    SET_IS_AUTH(state, payload) { 
+    SET_IS_AUTH(state, payload) {
       state.isAuth = payload;
     },
-    SET_SYMBOLS(state, payload) { 
+    SET_SYMBOLS(state, payload) {
       state.symbols = payload;
     },
-    SET_TIME_SERIES(state, payload) { 
+    SET_TIME_SERIES(state, payload) {
       state.timeSeries = payload;
     },
   },
@@ -28,15 +28,15 @@ export default new Vuex.Store({
     },
     findSymbols({ commit }, payload) { // finds symbol by company name
       return axios.get("/query", {
-        params: { 
+        params: {
           keywords: payload,
-          function: 'SYMBOL_SEARCH', 
+          function: 'SYMBOL_SEARCH',
           datatype: 'json'
         }
       })
         .then(resp => {
           console.log(resp.data);
-          if(resp.status === 200) {
+          if (resp.status === 200) {
             commit("SET_SYMBOLS", resp.data.bestMatches)
           }
         })
@@ -44,21 +44,36 @@ export default new Vuex.Store({
     },
     fetchTimeSeries({ commit }, payload) { // fetches time series by symbol and interval
       return axios.get("/query", {
-        params: { 
+        params: {
           symbol: payload.symbol,
-          function: `TIME_SERIES_${payload.interval}`, 
+          function: `TIME_SERIES_${payload.interval}`,
           outputsize: 'compact',
-          datatype: 'csv'
+          datatype: 'json'
         }
       })
         .then(resp => {
           console.log(resp.data);
-          if(resp.status === 200) {
+          if (resp.status === 200) {
             commit("SET_TIME_SERIES", resp.data)
           }
         })
         .catch(err => console.log(err))
     }
   },
+  getters: {
+    getFormattedTimeSeries(state) {
+      const timeSeries = state.timeSeries["Time Series (Daily)"]
+      return Object.keys(timeSeries).map(key => {
+        return {
+          open: timeSeries[key]["1. open"],
+          high: timeSeries[key]["2. high"],
+          low: timeSeries[key]["3. low"],
+          close: timeSeries[key]["4. close"],
+          volume: timeSeries[key]["5. volume"],
+          date: key
+        }
+      });
+    }
+  }
 
 })
