@@ -23,7 +23,7 @@ export default {
   watch: {
     draw(isDrawing) {
       if(isDrawing) {
-        this.drawChart();
+        // this.drawChart();
       }
     }
   },

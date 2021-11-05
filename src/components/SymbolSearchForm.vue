@@ -9,7 +9,6 @@
     hide-details
     hide-selected
     item-text="2. name"
-    
     return-object
     label="Search for a coin..."
     solo
