@@ -1,13 +1,13 @@
 <template>
-  <v-snackbar v-model="snackbar">
-    {{ text }}
+  <v-snackbar v-model="snackbar.state">
+    {{ snackbar.text }}
 
     <template v-slot:action="{ attrs }">
       <v-btn
         color="pink"
         text
         v-bind="attrs"
-        @click="snackbar = false"
+        @click="snackbar.state = false"
       >
         Close
       </v-btn>
@@ -16,8 +16,30 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 export default {
-  name: 'BaseSnackbar'
+  name: 'BaseSnackbar',
+  data() {
+    return {
+      // data: {
+      //   state: false,
+      //   text: ""
+      // },
+    }
+  },
+  computed: {
+    ...mapState(["snackbar"]),
+  },
+  // watch: {
+  //   'snackbar': {
+  //     handler(val) {
+  //       console.log(val);
+  //       this.data = val
+  //     },
+  //     deep: true,
+  //   }
+  // }
 };
 </script>
 

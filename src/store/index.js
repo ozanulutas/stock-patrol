@@ -10,6 +10,10 @@ export default new Vuex.Store({
     isAuth: false,  // indicates whether the user is authenticated or not
     symbols: [], // symbol search results
     timeSeries: {}, // time series for a symbol
+    snackbar: {
+      state: false,
+      text: ""
+    }, // snackbar's content
   },
   mutations: {
     SET_IS_AUTH(state, payload) {
@@ -20,6 +24,9 @@ export default new Vuex.Store({
     },
     SET_TIME_SERIES(state, payload) {
       state.timeSeries = payload;
+    },
+    SET_SNACKBAR(state, payload) {
+      state.snackbar = payload;
     },
   },
   actions: {
@@ -58,6 +65,9 @@ export default new Vuex.Store({
           }
         })
         .catch(err => console.log(err))
+    },
+    setSnackbar({ commit }, payload) { // sets the snackbar's state
+      commit("SET_SNACKBAR", payload)
     }
   },
   getters: {
