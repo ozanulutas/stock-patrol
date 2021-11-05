@@ -1,17 +1,17 @@
 <template>
   <v-container>
-    <SearchForm />
+    <SymbolSearchForm />
     <router-view></router-view>
   </v-container>
 </template>
 
 <script>
-import SearchForm from "@/components/SearchForm"
+import SymbolSearchForm from "@/components/SymbolSearchForm"
 
 export default {
   name: "PublicLayout",
   components: {
-    SearchForm,
+    SymbolSearchForm,
   }
 }
 </script>

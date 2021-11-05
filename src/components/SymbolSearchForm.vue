@@ -59,7 +59,7 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
-  name: "SearchForm",
+  name: "SymbolSearchForm",
   data() {
     return {
       isLoading: false,
