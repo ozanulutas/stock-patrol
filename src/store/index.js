@@ -9,15 +9,11 @@ export default new Vuex.Store({
   state: {
     isAuth: false,  // indicates whether the user is authenticated or not
     symbols: [], // symbol search results
-    symbol: {}, // currently selected symbol
     timeSeries: {}, // time series for a symbol
   },
   mutations: {
     SET_IS_AUTH(state, payload) {
       state.isAuth = payload;
-    },
-    SET_SYMBOL(state, payload) {
-      state.symbol = payload;
     },
     SET_SYMBOLS(state, payload) {
       state.symbols = payload;
@@ -40,6 +36,7 @@ export default new Vuex.Store({
       })
         .then(resp => {
           if (resp.status === 200) {
+            console.log(resp, "symbol resp");
             commit("SET_SYMBOLS", resp.data.bestMatches)
           }
         })
@@ -49,12 +46,13 @@ export default new Vuex.Store({
       return axios.get("/query", {
         params: {
           symbol: payload.symbol,
-          function: `TIME_SERIES_${payload.interval}`,
+          function: `TIME_SERIES_${payload.serie}`,
           outputsize: 'compact',
           datatype: 'json'
         }
       })
         .then(resp => {
+          console.log(resp, "series resp");
           if (resp.status === 200) {
             commit("SET_TIME_SERIES", resp.data)
           }
@@ -63,8 +61,24 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getFormattedTimeSeries(state) {
-      const timeSeries = state.timeSeries["Time Series (Daily)"]
+    // returns time series as formatted
+    getFormattedTimeSeries: (state) => (serie) => {
+      let serieKey = ""
+      switch (serie) {
+        case "Daily":
+          serieKey = `Time Series (${serie})`
+          break;
+        case "Weekly":
+          serieKey = `${serie} Time Series`
+          break;
+        case "Monthly":
+          serieKey = `${serie} Time Series`
+          break;
+        default:
+          break;
+      }
+      const timeSeries = state.timeSeries[serieKey]
+
       return Object.keys(timeSeries).map(key => {
         return {
           open: timeSeries[key]["1. open"],

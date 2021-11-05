@@ -6,27 +6,34 @@
 
 <script>
 import * as d3 from "d3";
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "TimeSeriesChart",
+  props: {
+    draw: Boolean,
+    serie: String,
+  },
   data() {
     return {};
   },
   computed: {
-    ...mapState(["timeSeries"]),
     ...mapGetters(["getFormattedTimeSeries"]),
   },
-  mounted() {
-    console.log(this.getFormattedTimeSeries);
-    console.log(this.timeSeries);
-    this.drawChart();
+  watch: {
+    draw(isDrawing) {
+      if(isDrawing) {
+        this.drawChart();
+      }
+    }
   },
   methods: {
-    drawChart() {
 
+    drawChart() {
+      d3.selectAll("svg > *").remove();
+      
       d3.csv("").then((prices) => {
-        prices = this.getFormattedTimeSeries;
+        prices = this.getFormattedTimeSeries(this.serie);
 
         var dateFormat = d3.timeParse("%Y-%m-%d");
         for (var i = 0; i < prices.length; i++) {
@@ -51,10 +58,7 @@ export default {
           return price["date"];
         });
 
-        //var xmin = d3.min(prices.map((r) => r.Date.getTime()));
-        //var xmax = d3.max(prices.map((r) => r.Date.getTime()));
         var xScale = d3.scaleLinear().domain([-1, dates.length]).range([0, w]);
-        //var xDateScale = d3.scaleQuantize().domain([0, dates.length]).range(dates);
         let xBand = d3
           .scaleBand()
           .domain(d3.range(-1, dates.length))

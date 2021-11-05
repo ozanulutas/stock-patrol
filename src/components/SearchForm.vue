@@ -108,7 +108,8 @@ export default {
     ...mapMutations(["SET_SYMBOL"]),
 
     selectSymbol() {
-      this.SET_SYMBOL(this.selectedSymbol);
+      // this.SET_SYMBOL(this.selectedSymbol);
+      localStorage.setItem("smp_symbol", JSON.stringify(this.selectedSymbol))
 
       this.$router.push({
         name: "SymbolPage",

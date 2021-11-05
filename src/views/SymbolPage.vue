@@ -1,44 +1,82 @@
 <template>
   <div>
-    <h1>{{ this.symbol["2. name"] }}</h1>
-    <!-- <TimeSeriesChart /> -->
+    <h1 v-if="symbol">{{ symbol["2. name"] }}</h1>
+
+    <v-btn-toggle dark v-model="activeBtn">
+      <v-btn
+        small
+        @click="setSeries('Daily')"
+      >
+        Daily
+      </v-btn>
+      <v-btn
+        small
+        @click="setSeries('Weekly')"
+      >
+        Weekly
+      </v-btn>
+      <v-btn
+        small
+        @click="setSeries('Monthly')"
+      >
+        Monthly
+      </v-btn>
+    </v-btn-toggle>
+
+    <TimeSeriesChart 
+      :draw="draw" 
+      :serie="serie"
+    />
   </div>
 </template>
 
 <script>
-// import TimeSeriesChart from "@/components/TimeSeriesChart"
-import { mapActions, mapState } from "vuex";
+import TimeSeriesChart from "@/components/TimeSeriesChart";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "SymbolPage",
   components: {
-    // TimeSeriesChart,
+    TimeSeriesChart,
   },
   data() {
     return {
-    }
+      draw: false,
+      serie: "Daily",
+      activeBtn: 0,
+      symbol: JSON.parse(localStorage.getItem("smp_symbol")),
+    };
   },
   computed: {
-    ...mapState(["symbol"]),
+    ...mapGetters(["getFormattedTimeSeries"]),
+  },
+  watch: {
+    serie() {
+      this.fetchSeries()
+    }
   },
   created() {
-    const symbol = this.$route.params.symbol
-    console.log(symbol);
-
-    if(symbol) {
-      this.fetchTimeSeries({
-        symbol,
-        interval: "DAILY"
-      })
-    }
+    this.fetchSeries()
   },
 
   methods: {
     ...mapActions(["fetchTimeSeries"]),
-  }
-}
+
+    setSeries(serie) {
+      this.draw = false;
+      this.serie = serie;
+    },
+
+    fetchSeries() {
+      this.fetchTimeSeries({
+        symbol: this.$route.params.symbol,
+        serie: this.serie.toUpperCase(),
+      }).then(() => {
+        // console.log(this.timeSeries, "this.timeSeries");
+        // console.log(this.getFormattedTimeSeries, "this.timeSeries");
+        this.draw = true;
+      });
+    },
+  },
+};
 </script>
-
-<style>
-
-</style>
