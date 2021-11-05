@@ -1,15 +1,18 @@
 import axios from "axios"
 
-const axs = axios.create();
+const axiosInstance = axios.create();
 
-const { // get values from .env
+// get values from .env
+const { 
   VUE_APP_API_URL: API_URL,
-  VUE_APP_API_HOST: API_HOST,
+  // VUE_APP_USER_AGENT: USER_AGENT,
   VUE_APP_API_KEY: API_KEY
 } = process.env
 
-axs.defaults.baseURL = API_URL;
-axs.defaults.headers.common['x-rapidapi-host'] = API_HOST;
-axs.defaults.headers.common['x-rapidapi-key'] = API_KEY;
+// set default axios values to use in api calls
+axiosInstance.defaults.baseURL = API_URL;
+// axiosInstance.defaults.headers.common['User-Agent'] = USER_AGENT;
+axiosInstance.defaults.params = {}
+axiosInstance.defaults.params['apikey'] = API_KEY
 
-export default axs;
+export default axiosInstance;

@@ -1,24 +1,40 @@
 <template>
   <div>
-    <h1>{{ this.$route.params.symbol }}</h1>
-    <TimeSeriesChart />
-    <!-- <TimeSeriesChart2 /> -->
+    <h1>{{ this.symbol["2. name"] }}</h1>
+    <!-- <TimeSeriesChart /> -->
   </div>
 </template>
 
 <script>
-import TimeSeriesChart from "@/components/TimeSeriesChart"
-// import TimeSeriesChart2 from "@/components/TimeSeriesChart2"
+// import TimeSeriesChart from "@/components/TimeSeriesChart"
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "SymbolPage",
   components: {
-    TimeSeriesChart,
-    // TimeSeriesChart2,
+    // TimeSeriesChart,
+  },
+  data() {
+    return {
+    }
+  },
+  computed: {
+    ...mapState(["symbol"]),
+  },
+  created() {
+    const symbol = this.$route.params.symbol
+    console.log(symbol);
+
+    if(symbol) {
+      this.fetchTimeSeries({
+        symbol,
+        interval: "DAILY"
+      })
+    }
   },
 
-  mounted() {
-    console.log(this.$route.params.symbol);
+  methods: {
+    ...mapActions(["fetchTimeSeries"]),
   }
 }
 </script>
