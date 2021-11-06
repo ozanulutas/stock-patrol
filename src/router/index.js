@@ -14,13 +14,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // if route requires authentication and user is authenticated, disable access
-  if(to.matched.some(record => record.meta.requiresAuth)) {
-    if(!store.state.isAuth) {
-      console.log("not auth");
-      store.dispatch("setSnackbar", {
-        state: true,
-        text: "Unauthorized access!",
-      })
+  const { meta: { middleware } = {} } = to.matched.find(record => record.meta.middleware) || {}
+  if (middleware) {
+    const middlewareModule = require(`@/middleware/${middleware}`);
+    if(middlewareModule) {
+      middlewareModule.default(next, store)
     } else {
       next()
     }

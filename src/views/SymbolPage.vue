@@ -5,19 +5,19 @@
     <v-btn-toggle dark v-model="activeBtn">
       <v-btn
         small
-        @click="setSeries('Daily')"
+        @click="setSerie('Daily')"
       >
         Daily
       </v-btn>
       <v-btn
         small
-        @click="setSeries('Weekly')"
+        @click="setSerie('Weekly')"
       >
         Weekly
       </v-btn>
       <v-btn
         small
-        @click="setSeries('Monthly')"
+        @click="setSerie('Monthly')"
       >
         Monthly
       </v-btn>
@@ -62,7 +62,7 @@ export default {
   methods: {
     ...mapActions(["fetchTimeSeries"]),
 
-    setSeries(serie) {
+    setSerie(serie) {
       this.draw = false;
       this.serie = serie;
     },
