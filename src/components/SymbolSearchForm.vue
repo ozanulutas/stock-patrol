@@ -1,40 +1,94 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-    @submit.prevent="submit()"
+  <v-card
+    color="red lighten-2"
+    dark
   >
-    <v-row align="center">
-      <v-col>
-        <v-text-field
-          v-model="form.company"
-          :rules="[v => !!v || 'Tihs field is required']"
-          label="Company"
-          clearable
-          :loading="isLoading"
-          prepend-icon="mdi-magnify"
-        >
-        </v-text-field>
-      </v-col>
+    <v-card-title class="text-h5 red lighten-3">
+      Search for Company Symbols
+    </v-card-title>
+    <v-card-text>
+      Explore hundreds of stock symbols and view their time series!
+    </v-card-text>
+    <v-card-text>
+      <!-- search form -->
+      <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation
+        @submit.prevent="submit()"
+      >
+        <v-row align="center">
+          <v-col>
+            <v-text-field
+              v-model="form.company"
+              :rules="[v => !!v || 'Tihs field is required']"
+              label="Company"
+              clearable
+              :loading="isLoading"
+              prepend-icon="mdi-magnify"
+            >
+            </v-text-field>
+          </v-col>
 
-      <v-col class="flex-0">
-        <v-btn
-          color="primary"
-          :disabled="!valid"
-          type="submit"
-        >
-          SEARCH
-        </v-btn>
-      </v-col>
+          <v-col class="flex-0">
+            <v-btn
+              color="primary"
+              :disabled="!valid"
+              type="submit"
+            >
+              SEARCH
+            </v-btn>
+          </v-col>
 
-    </v-row>
+        </v-row>
 
-  </v-form>
+      </v-form>
+    </v-card-text>
+    <v-divider></v-divider>
+    <!-- results expansion -->
+    <v-expansion-panels
+      v-model="panels"
+      flat
+      multiple
+    >
+      <v-expansion-panel
+        class="red lighten-3"
+        :disabled="symbols.length === 0"
+      >
+        <v-expansion-panel-header>
+          {{ symbols.length > 0 ? "Search Results" : ""}}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="red lighten-2">
+          <!-- results -->
+          <v-list class="red lighten-2">
+            <v-list-item-group>
+              <v-list-item
+                v-for="(symbol, i) in symbols"
+                :key="i"
+                link
+                @click="selectSymbol(symbol)"
+              >
+                <v-list-item-avatar
+                  color="indigo"
+                  class="text-h5 font-weight-light white--text"
+                >
+                  {{ symbol['1. symbol'].charAt(0) }}
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="symbol['2. name']"></v-list-item-title>
+                  <v-list-item-subtitle v-text="symbol['1. symbol']"></v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-card>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "SymbolSearchForm",
@@ -46,7 +100,11 @@ export default {
       },
       valid: true, // form's validity state
       isLoading: false, // is requesting
+      panels: [], // expanded search results panel
     };
+  },
+  computed: {
+    ...mapState(["symbols"]),
   },
   mounted() {
     const company = this.$route.query.company;
@@ -74,6 +132,8 @@ export default {
             company: this.form.company,
           },
         });
+
+        this.panels = [0]; // expand results panel
       });
     },
 
@@ -87,17 +147,16 @@ export default {
       );
     },
 
-    // selectSymbol() {
-    //   // this.SET_SYMBOL(this.selectedSymbol);
-    //   localStorage.setItem("smp_symbol", JSON.stringify(this.selectedSymbol))
+    selectSymbol(symbol) {
+      localStorage.setItem("smp_symbol", JSON.stringify(symbol))
 
-    //   this.$router.push({
-    //     name: "SymbolPage",
-    //     params: {
-    //       symbol: this.selectedSymbol["1. symbol"],
-    //     },
-    //   });
-    // },
+      this.$router.push({
+        name: "SymbolPage",
+        params: {
+          symbol: symbol["1. symbol"],
+        },
+      });
+    },
   },
 };
 </script>
