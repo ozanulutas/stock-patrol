@@ -114,6 +114,8 @@ export default {
       this.form.company = company;
       this.searchSymbol();
     }
+
+    console.log(this.$route);
   },
   methods: {
     ...mapActions(["findSymbol"]),
@@ -124,7 +126,7 @@ export default {
         return;
       }
 
-      // if form is valid searches the symbol and sets the route quesry
+      // if form is valid searches the symbol and sets the route query
       this.searchSymbol().then(() => {
         this.$router.push({
           path: "/",

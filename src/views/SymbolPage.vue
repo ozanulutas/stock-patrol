@@ -56,43 +56,66 @@ export default {
   computed: {
     ...mapGetters(["getFormattedTimeSeries"]),
   },
+  watch: {
+    $route(to, from) {
+      // get serie query value from prev route
+      const serie = from.query.serie;
+
+      // if there is a serie query and symbol is changed (that means a new symbol search is made)
+      // set the url according to new search params
+      if (serie && to.params.symbol !== from.params.symbol) {
+        this.$router.push({
+          path: `/symbol/${this.$route.params.symbol}`,
+          query: {
+            serie: serie,
+          },
+        });
+      }
+
+      // if here are change in route, fetch new series
+      this.fetchSeries();
+    },
+  },
 
   created() {
+    // when page is created check if there is a serie query in url
+    // if there is serie query in url, set local serie state
     const serie = this.$route.query.serie;
-    if(serie) {
-      this.serie = serie
+    if (serie) {
+      this.serie = serie;
     }
 
+    // fetch the series
     this.fetchSeries();
-  },
-  beforeDestroy() {
-    this.drawChart = false;
   },
 
   methods: {
     ...mapActions(["fetchTimeSeries"]),
 
+    // sets the serie state and updates the url accordingly
     setSerie(serie) {
-      this.drawChart = false;
-      this.serie = serie;
+      if (this.serie === serie) {
+        return;
+      }
 
-      this.fetchSeries();
+      this.serie = serie;
 
       this.$router.push({
         path: `/symbol/${this.$route.params.symbol}`,
         query: {
-          serie: this.serie
-        }
-      })
+          serie: this.serie,
+        },
+      });
     },
 
+    // fetch series and triggers chart drawing
     fetchSeries() {
+      this.drawChart = false;
+
       this.fetchTimeSeries({
         symbol: this.$route.params.symbol,
         serie: this.serie,
       }).then(() => {
-        // console.log(this.timeSeries, "this.timeSeries");
-        // console.log(this.getFormattedTimeSeries, "this.timeSeries");
         this.drawChart = true;
       });
     },
