@@ -1,122 +1,103 @@
 <template>
-  <v-autocomplete
-    v-model="selectedSymbol"
-    :items="symbols"
-    :loading="isLoading"
-    :search-input.sync="search"
-    chips
-    clearable
-    hide-details
-    hide-selected
-    item-text="2. name"
-    return-object
-    label="Search for a coin..."
-    solo
-    @input="selectSymbol"
+  <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+    @submit.prevent="submit()"
   >
-    <template v-slot:no-data>
-      <v-list-item>
-        <v-list-item-title>
-          Search for your favorite
-          <strong>Cryptocurrency</strong>
-        </v-list-item-title>
-      </v-list-item>
-    </template>
-    <template v-slot:selection="{ attr, on, item, selected }">
-      <v-chip
-        v-bind="attr"
-        :input-value="selected"
-        color="blue-grey"
-        class="white--text"
-        v-on="on"
-      >
-        <v-icon left>
-          mdi-bitcoin
-        </v-icon>
-        <span v-text="item['2. name']"></span>
-      </v-chip>
-    </template>
-    <template v-slot:item="{ item }">
-      <v-list-item-avatar
-        color="indigo"
-        class="text-h5 font-weight-light white--text"
-      >
-        {{ item['2. name'].charAt(0) }}
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title v-text="item['2. name']"></v-list-item-title>
-        <v-list-item-subtitle v-text="item['1. symbol']"></v-list-item-subtitle>
-      </v-list-item-content>
-      <v-list-item-action>
-        <v-icon>mdi-bitcoin</v-icon>
-      </v-list-item-action>
-    </template>
-  </v-autocomplete>
+    <v-row align="center">
+      <v-col>
+        <v-text-field
+          v-model="form.company"
+          :rules="[v => !!v || 'Tihs field is required']"
+          label="Company"
+          clearable
+          :loading="isLoading"
+          prepend-icon="mdi-magnify"
+        >
+        </v-text-field>
+      </v-col>
+
+      <v-col class="flex-0">
+        <v-btn
+          color="primary"
+          :disabled="!valid"
+          type="submit"
+        >
+          SEARCH
+        </v-btn>
+      </v-col>
+
+    </v-row>
+
+  </v-form>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "SymbolSearchForm",
   data() {
     return {
-      isLoading: false,
-      items: [],
-      selectedSymbol: null,
-      search: null,
+      // form data to submit
+      form: {
+        company: "",
+      },
+      valid: true, // form's validity state
+      isLoading: false, // is requesting
     };
   },
-  computed: {
-    ...mapState(["symbols"]),
-  },
-  watch: {
-    selectedSymbol(symbol) {
-      console.log("symbol", symbol);
-    },
-    search(company) {
-      if (company.length < 3) {
-        return;
-      }
-
-      this.isLoading = true;
-      // searches the symbol by company name
-      // and sets the url query by search param
-      this.findSymbol(company)
-        .then(() => {
-          this.$router.push({
-            path: "/",
-            query: {
-              company: company,
-            },
-          });
-        })
-        .finally(() => (this.isLoading = false));
-    },
-  },
-  created() {
+  mounted() {
     const company = this.$route.query.company;
 
     // if there is company url query, searches symbol by company name on refresh
     if (company) {
-      this.findSymbol(company);
+      this.form.company = company;
+      this.searchSymbol();
     }
   },
   methods: {
     ...mapActions(["findSymbol"]),
-    ...mapMutations(["SET_SYMBOL"]),
 
-    selectSymbol() {
-      // this.SET_SYMBOL(this.selectedSymbol);
-      localStorage.setItem("smp_symbol", JSON.stringify(this.selectedSymbol))
+    submit() {
+      // checks the validity of the form
+      if (!this.$refs.form.validate()) {
+        return;
+      }
 
-      this.$router.push({
-        name: "SymbolPage",
-        params: {
-          symbol: this.selectedSymbol["1. symbol"],
-        },
+      // if form is valid searches the symbol and sets the route quesry
+      this.searchSymbol().then(() => {
+        this.$router.push({
+          path: "/",
+          query: {
+            company: this.form.company,
+          },
+        });
       });
     },
+
+    // searches the symbol and sets the loading state form form input
+    searchSymbol() {
+      this.isLoading = true;
+
+      // finds the symbols bu company name
+      return this.findSymbol(this.form.company).finally(
+        () => (this.isLoading = false)
+      );
+    },
+
+    // selectSymbol() {
+    //   // this.SET_SYMBOL(this.selectedSymbol);
+    //   localStorage.setItem("smp_symbol", JSON.stringify(this.selectedSymbol))
+
+    //   this.$router.push({
+    //     name: "SymbolPage",
+    //     params: {
+    //       symbol: this.selectedSymbol["1. symbol"],
+    //     },
+    //   });
+    // },
   },
 };
 </script>

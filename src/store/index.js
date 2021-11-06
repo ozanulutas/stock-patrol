@@ -43,7 +43,7 @@ export default new Vuex.Store({
       })
         .then(resp => {
           if (resp.status === 200) {
-            console.log(resp, "symbol resp");
+            console.log(resp.data, "symbol resp");
             commit("SET_SYMBOLS", resp.data.bestMatches)
           }
         })
@@ -59,7 +59,7 @@ export default new Vuex.Store({
         }
       })
         .then(resp => {
-          console.log(resp, "series resp");
+          console.log(resp.data, "series resp");
           if (resp.status === 200) {
             commit("SET_TIME_SERIES", resp.data)
           }
