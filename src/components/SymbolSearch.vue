@@ -91,7 +91,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "SymbolSearchForm",
+  name: "SymbolSearch",
   data() {
     return {
       // form data to submit
