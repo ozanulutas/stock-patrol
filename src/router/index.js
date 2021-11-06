@@ -13,7 +13,7 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-  // if route requires authentication and user is authenticated, disable access
+  // if route has meta midlleware calls the specific meiddleware to action
   const { meta: { middleware } = {} } = to.matched.find(record => record.meta.middleware) || {}
   if (middleware) {
     const middlewareModule = require(`@/middleware/${middleware}`);
