@@ -147,6 +147,7 @@ export default {
       );
     },
 
+    // redirect to chart page and set symbol to localstorage when symbol is selected from list
     selectSymbol(symbol) {
       localStorage.setItem("smp_symbol", JSON.stringify(symbol))
 
@@ -156,6 +157,8 @@ export default {
           symbol: symbol["1. symbol"],
         },
       });
+
+      this.panels = []; // close results panel
     },
   },
 };

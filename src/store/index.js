@@ -53,7 +53,7 @@ export default new Vuex.Store({
       return axios.get("/query", {
         params: {
           symbol: payload.symbol,
-          function: `TIME_SERIES_${payload.serie}`,
+          function: `TIME_SERIES_${payload.serie.toUpperCase()}`,
           outputsize: 'compact',
           datatype: 'json'
         }
@@ -74,6 +74,8 @@ export default new Vuex.Store({
     // returns time series as formatted
     getFormattedTimeSeries: (state) => (serie) => {
       let serieKey = ""
+      serie = serie[0].toUpperCase() + serie.slice(1, serie.length)
+
       switch (serie) {
         case "Daily":
           serieKey = `Time Series (${serie})`
@@ -88,14 +90,15 @@ export default new Vuex.Store({
           break;
       }
       const timeSeries = state.timeSeries[serieKey]
+      console.log(timeSeries);
 
       return Object.keys(timeSeries).map(key => {
         return {
-          open: timeSeries[key]["1. open"],
-          high: timeSeries[key]["2. high"],
-          low: timeSeries[key]["3. low"],
-          close: timeSeries[key]["4. close"],
-          volume: timeSeries[key]["5. volume"],
+          open: parseFloat(timeSeries[key]["1. open"]),
+          high: parseFloat(timeSeries[key]["2. high"]),
+          low: parseFloat(timeSeries[key]["3. low"]),
+          close: parseFloat(timeSeries[key]["4. close"]),
+          volume: parseFloat(timeSeries[key]["5. volume"]),
           date: key
         }
       });

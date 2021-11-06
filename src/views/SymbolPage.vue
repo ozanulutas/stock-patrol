@@ -1,30 +1,36 @@
 <template>
   <div>
-    <h1 v-if="symbol">{{ symbol["2. name"] }}</h1>
+    <h1
+      v-if="symbol"
+      class="my-5"
+    >{{ symbol["2. name"] }}</h1>
 
-    <v-btn-toggle dark v-model="activeBtn">
+    <v-btn-toggle
+      dark
+      v-model="activeBtn"
+    >
       <v-btn
         small
-        @click="setSerie('Daily')"
+        @click="setSerie('daily')"
       >
         Daily
       </v-btn>
       <v-btn
         small
-        @click="setSerie('Weekly')"
+        @click="setSerie('weekly')"
       >
         Weekly
       </v-btn>
       <v-btn
         small
-        @click="setSerie('Monthly')"
+        @click="setSerie('monthly')"
       >
         Monthly
       </v-btn>
     </v-btn-toggle>
 
-    <TimeSeriesChart 
-      :draw="draw" 
+    <TimeSeriesChart
+      :draw="drawChart"
       :serie="serie"
     />
   </div>
@@ -41,40 +47,53 @@ export default {
   },
   data() {
     return {
-      draw: false,
-      serie: "Daily",
-      activeBtn: 0,
+      drawChart: false,
+      serie: "daily", // time serie
+      activeBtn: 0, // active serie selection btn
       symbol: JSON.parse(localStorage.getItem("smp_symbol")),
     };
   },
   computed: {
     ...mapGetters(["getFormattedTimeSeries"]),
   },
-  watch: {
-    serie() {
-      this.fetchSeries()
-    }
-  },
+
   created() {
-    this.fetchSeries()
+    const serie = this.$route.query.serie;
+    if(serie) {
+      this.serie = serie
+    }
+
+    this.fetchSeries();
+  },
+  beforeDestroy() {
+    this.drawChart = false;
   },
 
   methods: {
     ...mapActions(["fetchTimeSeries"]),
 
     setSerie(serie) {
-      this.draw = false;
+      this.drawChart = false;
       this.serie = serie;
+
+      this.fetchSeries();
+
+      this.$router.push({
+        path: `/symbol/${this.$route.params.symbol}`,
+        query: {
+          serie: this.serie
+        }
+      })
     },
 
     fetchSeries() {
       this.fetchTimeSeries({
         symbol: this.$route.params.symbol,
-        serie: this.serie.toUpperCase(),
+        serie: this.serie,
       }).then(() => {
         // console.log(this.timeSeries, "this.timeSeries");
         // console.log(this.getFormattedTimeSeries, "this.timeSeries");
-        this.draw = true;
+        this.drawChart = true;
       });
     },
   },
