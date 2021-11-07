@@ -116,7 +116,6 @@ export default {
       this.searchSymbol();
     }
 
-    console.log(this.$route);
   },
   methods: {
     ...mapActions(["findSymbol"]),

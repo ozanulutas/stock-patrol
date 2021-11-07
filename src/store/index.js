@@ -10,10 +10,10 @@ export default new Vuex.Store({
     isAuth: false,  // indicates whether the user is authenticated or not
     symbols: [], // symbol search results
     timeSeries: {}, // time series for a symbol
-    snackbar: {
+    snackbar: { // snackbar's content
       state: false,
       text: ""
-    }, // snackbar's content
+    }, 
   },
   mutations: {
     SET_IS_AUTH(state, payload) {

@@ -13,18 +13,36 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
+  
+  let logError = ""; // error on route visits
+  let log = JSON.parse(localStorage.getItem("sp_route_log")) || []; // old log from local storage
+
   // if route has meta midlleware calls the specific meiddleware to action
   const { meta: { middleware } = {} } = to.matched.find(record => record.meta.middleware) || {}
   if (middleware) {
     const middlewareModule = require(`@/middleware/${middleware}`);
     if(middlewareModule) {
-      middlewareModule.default(next, store)
+      logError = middlewareModule.default(next, store);
     } else {
       next()
     }
   } else {
     next()
   }
+
+  // TODO logError homedan admine giderken gelimoyr
+  // set log with route info and put it in local storage
+  log.push({
+    title: new Date(),
+    isAuth: store.state.isAuth,
+    from: from.fullPath,
+    to: to.fullPath,
+    error: logError
+  });
+  localStorage.setItem("sp_route_log", JSON.stringify(log));
+  
+  log = [];
 })
+
 
 export default router

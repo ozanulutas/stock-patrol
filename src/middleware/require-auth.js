@@ -4,7 +4,8 @@ export default function(next, store) {
     store.dispatch("setSnackbar", {
       state: true,
       text: "Unauthorized access!",
-    })
+    });
+    return "Unauthorized Access"
   } else {
     next()
   }
