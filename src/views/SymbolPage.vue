@@ -10,22 +10,12 @@
       v-model="activeBtn"
     >
       <v-btn
+        v-for="serie, i in series"
+        :key="i"
         small
-        @click="setSerie('daily')"
+        @click="setSerie(serie)"
       >
-        Daily
-      </v-btn>
-      <v-btn
-        small
-        @click="setSerie('weekly')"
-      >
-        Weekly
-      </v-btn>
-      <v-btn
-        small
-        @click="setSerie('monthly')"
-      >
-        Monthly
+        {{ serie | capitalize}}
       </v-btn>
     </v-btn-toggle>
 
@@ -49,6 +39,7 @@ export default {
     return {
       drawChart: false,
       serie: "daily", // time serie
+      series: ["daily", "weekly", "monthly"],
       activeBtn: 0, // active serie selection btn
       symbol: JSON.parse(localStorage.getItem("smp_symbol")),
     };
@@ -83,6 +74,8 @@ export default {
     const serie = this.$route.query.serie;
     if (serie) {
       this.serie = serie;
+      // set active btn according to serie
+      this.activeBtn = this.series.indexOf(serie)
     }
 
     // fetch the series
