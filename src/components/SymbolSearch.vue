@@ -1,9 +1,10 @@
 <template>
   <v-card
-    color="red lighten-2"
-    dark
   >
-    <v-card-title class="text-h5 red lighten-3">
+    <!-- dark
+    color="gray lighten-2" -->
+   
+    <v-card-title class="text-h5"> <!--  red lighten-3 -->
       Search for Company Symbols
     </v-card-title>
     <v-card-text>
@@ -51,16 +52,16 @@
       flat
       multiple
     >
+        
       <v-expansion-panel
-        class="red lighten-3"
         :disabled="symbols.length === 0"
-      >
+      ><!-- class="red lighten-3" -->
         <v-expansion-panel-header>
           {{ symbols.length > 0 ? "Search Results" : ""}}
         </v-expansion-panel-header>
-        <v-expansion-panel-content class="red lighten-2">
+        <v-expansion-panel-content><!-- class="red lighten-2" -->
           <!-- results -->
-          <v-list class="red lighten-2">
+          <v-list><!-- class="red lighten-2" -->
             <v-list-item-group>
               <v-list-item
                 v-for="(symbol, i) in symbols"
