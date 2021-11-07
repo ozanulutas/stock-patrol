@@ -152,7 +152,7 @@ export default {
 
     // redirect to chart page and set symbol to localstorage when symbol is selected from list
     selectSymbol(symbol) {
-      localStorage.setItem("smp_symbol", JSON.stringify(symbol))
+      localStorage.setItem("sp_symbol", JSON.stringify(symbol))
 
       this.$router.push({
         name: "SymbolPage",

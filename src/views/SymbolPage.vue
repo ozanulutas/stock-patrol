@@ -41,7 +41,7 @@ export default {
       serie: "daily", // time serie
       series: ["daily", "weekly", "monthly"],
       activeBtn: 0, // active serie selection btn
-      symbol: JSON.parse(localStorage.getItem("smp_symbol")),
+      symbol: JSON.parse(localStorage.getItem("sp_symbol")),
     };
   },
   computed: {
