@@ -1,15 +1,15 @@
 <template>
-  <v-card
-  >
-    <!-- dark
-    color="gray lighten-2" -->
-   
-    <v-card-title class="text-h5"> <!--  red lighten-3 -->
-      Search for Company Symbols
-    </v-card-title>
-    <v-card-text>
-      Explore hundreds of stock symbols and view their time series!
-    </v-card-text>
+  <v-card>
+    <v-expand-transition>
+      <div v-show="isHomePage">
+        <v-card-title class="text-h5">
+          Search for Company Symbols
+        </v-card-title>
+        <v-card-text>
+          Explore hundreds of stock symbols and view their time series!
+        </v-card-text>
+      </div>
+    </v-expand-transition>
     <v-card-text>
       <!-- search form -->
       <v-form
@@ -48,20 +48,19 @@
     <v-divider></v-divider>
     <!-- results expansion -->
     <v-expansion-panels
+      v-if="symbols.length > 0"
       v-model="panels"
       flat
       multiple
     >
-        
-      <v-expansion-panel
-        :disabled="symbols.length === 0"
-      ><!-- class="red lighten-3" -->
+
+      <v-expansion-panel :disabled="symbols.length === 0">
         <v-expansion-panel-header>
           {{ symbols.length > 0 ? "Search Results" : ""}}
         </v-expansion-panel-header>
-        <v-expansion-panel-content><!-- class="red lighten-2" -->
+        <v-expansion-panel-content>
           <!-- results -->
-          <v-list><!-- class="red lighten-2" -->
+          <v-list>
             <v-list-item-group>
               <v-list-item
                 v-for="(symbol, i) in symbols"
@@ -106,6 +105,9 @@ export default {
   },
   computed: {
     ...mapState(["symbols"]),
+    isHomePage() {
+      return this.$route.fullPath === "/";
+    },
   },
   mounted() {
     const company = this.$route.query.company;
@@ -115,7 +117,6 @@ export default {
       this.form.company = company;
       this.searchSymbol();
     }
-
   },
   methods: {
     ...mapActions(["findSymbol"]),
@@ -151,7 +152,7 @@ export default {
 
     // redirect to chart page and set symbol to localstorage when symbol is selected from list
     selectSymbol(symbol) {
-      localStorage.setItem("sp_symbol", JSON.stringify(symbol))
+      localStorage.setItem("sp_symbol", JSON.stringify(symbol));
 
       this.$router.push({
         name: "SymbolPage",

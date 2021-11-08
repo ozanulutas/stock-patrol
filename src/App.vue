@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <TheHeader />
-    <v-main>
+    <v-main class="grey lighten-5">
       <router-view />
       <BaseSnackbar/>
     </v-main>
