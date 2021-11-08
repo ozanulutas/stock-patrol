@@ -70,14 +70,24 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "TheHeader",
 
   data: () => ({
     selectedItem: 0,
+    authTypes: [
+      false,
+      true,
+    ]
   }),
+  computed: {
+    ...mapState(["isLoggedIn"]),
+  },
+  created() {
+    this.selectedItem = this.authTypes.indexOf(this.isLoggedIn);
+  },
   methods: {
     ...mapActions(["authenticate"]),
   },
