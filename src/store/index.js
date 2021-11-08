@@ -44,7 +44,7 @@ export default new Vuex.Store({
         localStorage.setItem("sp_is_logged_in", payload)
         dispatch("smackbar", {
           show: true,
-          text: `You are successfully logged ${isLoggedIn ? "in" : "out"}.`,
+          text: `You are successfully logged ${state.isLoggedIn ? "in" : "out"}.`,
         });
       }
     },
