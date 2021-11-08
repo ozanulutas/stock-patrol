@@ -8,6 +8,7 @@
         <v-card-text>
           Explore hundreds of stock symbols and view their time series!
         </v-card-text>
+        <v-divider></v-divider>
       </div>
     </v-expand-transition>
     <v-card-text>

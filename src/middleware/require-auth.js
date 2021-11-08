@@ -11,6 +11,7 @@ export default function(next, store) {
         }
       }
     });
+
     return "Unauthorized Access"
   } else {
     next();

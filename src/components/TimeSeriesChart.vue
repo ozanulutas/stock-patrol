@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <v-card>
+    <v-card-text>
     <svg id="chart"></svg>
     <!-- <div id="chart2"></div> -->
-  </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
