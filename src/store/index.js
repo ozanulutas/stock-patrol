@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isAuth: false,  // indicates whether the user is authenticated or not
+    isLoggedIn: false,  // indicates whether the user is authenticated or not
     symbols: [], // symbol search results
     timeSeries: {}, // time series for a symbol
     snackbar: { // snackbar's content
@@ -17,7 +17,7 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_IS_AUTH(state, payload) {
-      state.isAuth = payload;
+      state.isLoggedIn = payload;
     },
     SET_SYMBOLS(state, payload) {
       state.symbols = payload;
@@ -30,7 +30,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    authenticate({ commit }, payload) { // sets the isAuth state - authenticates the user
+    authenticate({ commit }, payload) { // sets the isLoggedIn state - authenticates the user
       commit("SET_IS_AUTH", payload);
     },
     findSymbol({ commit }, payload) { // finds symbol by company name

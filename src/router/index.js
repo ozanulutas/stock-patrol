@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
   // set log with route info and put it in local storage
   log.push({
     title: new Date(),
-    isAuth: store.state.isAuth,
+    isLoggedIn: store.state.isLoggedIn,
     from: from.fullPath,
     to: to.fullPath,
     error: logError
