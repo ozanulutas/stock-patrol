@@ -16,7 +16,7 @@ export default new Vuex.Store({
     }, 
   },
   mutations: {
-    SET_IS_AUTH(state, payload) {
+    SET_IS_LOGGED_IN(state, payload) {
       state.isLoggedIn = payload;
     },
     SET_SYMBOLS(state, payload) {
@@ -31,7 +31,7 @@ export default new Vuex.Store({
   },
   actions: {
     authenticate({ commit }, payload) { // sets the isLoggedIn state - authenticates the user
-      commit("SET_IS_AUTH", payload);
+      commit("SET_IS_LOGGED_IN", payload);
     },
     findSymbol({ commit }, payload) { // finds symbol by company name
       return axios.get("/query", {
