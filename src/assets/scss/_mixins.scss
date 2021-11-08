@@ -29,7 +29,7 @@
 @mixin flexes {
     @for $i from 0 through 5 {
         .flex-#{$i} {
-            flex: $i;
+            flex: $i !important;
         }
     }
 }

@@ -18,10 +18,5 @@ export default {
     TheHeader,
     BaseSnackbar,
   },
-  data: () => ({
-
-  }),
-  methods: {
-  }
 };
 </script>

@@ -1,4 +1,5 @@
 // if route requires authentication and user is not authenticated, prevent access
+// returns error name for logging
 export default function(next, store) {
   if (!store.state.isLoggedIn) {
     store.dispatch("smackbar", {
@@ -12,6 +13,7 @@ export default function(next, store) {
     });
     return "Unauthorized Access"
   } else {
-    next()
+    next();
   }
+  return ""
 }

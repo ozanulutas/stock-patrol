@@ -5,9 +5,11 @@ import axios from "@/plugins/axios"
 
 Vue.use(Vuex)
 
+const isLoggedIn = JSON.parse(localStorage.getItem("sp_is_logged_in"));
+
 export default new Vuex.Store({
   state: {
-    isLoggedIn: false,  // indicates whether the user is authenticated or not
+    isLoggedIn: isLoggedIn !== null ? isLoggedIn : false,  // indicates whether the user is authenticated or not
     symbols: [], // symbol search results
     timeSeries: {}, // time series for a symbol
     snackbar: { // snackbar's content
@@ -35,13 +37,14 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    authenticate({ commit, state, dispatch }, payload) { // sets the isLoggedIn state - authenticates the user
+    authenticate({ commit, dispatch, state }, payload) { // sets the isLoggedIn state - authenticates the user
       // if authentication state is change show snackbar
       if (payload !== state.isLoggedIn) {
         commit("SET_IS_LOGGED_IN", payload);
+        localStorage.setItem("sp_is_logged_in", payload)
         dispatch("smackbar", {
           show: true,
-          text: `You are successfully logged ${payload ? "in" : "out"}.`
+          text: `You are successfully logged ${isLoggedIn ? "in" : "out"}.`,
         });
       }
     },

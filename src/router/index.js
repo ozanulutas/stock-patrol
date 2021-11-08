@@ -13,7 +13,6 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-  
   let logError = ""; // error on route visits
   let log = JSON.parse(localStorage.getItem("sp_route_log")) || []; // old log from local storage
 

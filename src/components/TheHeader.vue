@@ -1,12 +1,18 @@
 <template>
-  <v-app-bar 
-    app 
-    color="primary" 
+  <v-app-bar
+    app
+    color="primary"
     dark
   >
     <v-container class="d-flex align-center">
-      <router-link style="color: white" to="/">Home</router-link> |
-      <router-link style="color: white" to="/admin">Admin</router-link>
+      <router-link
+        style="color: white"
+        to="/"
+      >Home</router-link> |
+      <router-link
+        style="color: white"
+        to="/admin"
+      >Admin</router-link>
 
       <v-spacer></v-spacer>
 
@@ -21,7 +27,11 @@
         <template v-slot:activator="{ on: menu, attrs }">
           <v-tooltip left>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...menu }">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="{ ...tooltip, ...menu }"
+              >
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
@@ -31,7 +41,10 @@
 
         <v-list dense>
           <v-subheader>AUTHENTICATION</v-subheader>
-          <v-list-item-group v-model="selectedItem" color="primary">
+          <v-list-item-group
+            v-model="selectedItem"
+            color="primary"
+          >
             <v-list-item @click="authenticate(false)">
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>

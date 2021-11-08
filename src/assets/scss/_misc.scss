@@ -1,17 +1,2 @@
 @include gaps;
 @include flexes;
-
-@include font-sizes;
-
-@include positions;
-@include z-indexes;
-
-@include dimensions;
-
-.reset-btn {
-    @include reset-btn;
-}
-
-.reset-list {
-    @include reset-list;
-}
