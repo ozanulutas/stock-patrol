@@ -1,13 +1,13 @@
 <template>
-  <v-snackbar v-model="snackbar.state">
+  <v-snackbar v-model="snackbar.show">
     {{ snackbar.text }}
 
     <template v-slot:action="{ attrs }">
       <v-btn
-        color="pink"
+        :color="snackbar.btn.close.color"
         text
         v-bind="attrs"
-        @click="snackbar.state = false"
+        @click="snackbar.show = false"
       >
         Close
       </v-btn>

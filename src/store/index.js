@@ -11,9 +11,14 @@ export default new Vuex.Store({
     symbols: [], // symbol search results
     timeSeries: {}, // time series for a symbol
     snackbar: { // snackbar's content
-      state: false,
-      text: ""
-    }, 
+      show: false,
+      text: "",
+      btn: {
+        close: {
+          color: "blue"
+        }
+      }
+    },
   },
   mutations: {
     SET_IS_LOGGED_IN(state, payload) {
@@ -30,8 +35,34 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    authenticate({ commit }, payload) { // sets the isLoggedIn state - authenticates the user
-      commit("SET_IS_LOGGED_IN", payload);
+    authenticate({ commit, state, dispatch }, payload) { // sets the isLoggedIn state - authenticates the user
+      // if authentication state is change show snackbar
+      if (payload !== state.isLoggedIn) {
+        commit("SET_IS_LOGGED_IN", payload);
+        dispatch("smackbar", {
+          show: true,
+          text: `You are successfully logged ${payload ? "in" : "out"}.`
+        });
+      }
+    },
+    smackbar({ commit }, { // sets the snackbar's state
+      show,
+      text,
+      btn: {
+        close: {
+          color = "blue"
+        } = {}
+      } = {}
+    }) { 
+      commit("SET_SNACKBAR", {
+        show,
+        text,
+        btn: {
+          close: {
+            color
+          }
+        }
+      })
     },
     findSymbol({ commit }, payload) { // finds symbol by company name
       return axios.get("/query", {
@@ -66,9 +97,7 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err))
     },
-    setSnackbar({ commit }, payload) { // sets the snackbar's state
-      commit("SET_SNACKBAR", payload)
-    }
+
   },
   getters: {
     // returns time series as formatted
