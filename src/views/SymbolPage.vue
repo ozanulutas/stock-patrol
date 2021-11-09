@@ -9,8 +9,6 @@
         {{ symbol["1. symbol"] }}
       </span>
     </h1>
-    
-
 
     <TimeSeriesChart
       :draw="drawChart"

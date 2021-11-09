@@ -9,7 +9,7 @@ const isLoggedIn = JSON.parse(localStorage.getItem("sp_is_logged_in"));
 
 export default new Vuex.Store({
   state: {
-    isLoading: false,
+    isLoading: false, // loading state for general use
     isLoggedIn: isLoggedIn !== null ? isLoggedIn : false,  // indicates whether the user is authenticated or not
     symbols: [], // symbol search results
     timeSeries: {}, // time series for a symbol
@@ -38,7 +38,8 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    authenticate({ commit, dispatch, state }, payload) { // sets the isLoggedIn state - authenticates the user
+    // sets the isLoggedIn state - authenticates the user
+    authenticate({ commit, dispatch, state }, payload) { 
       // if authentication state is change show snackbar
       if (payload !== state.isLoggedIn) {
         commit("SET_IS_LOGGED_IN", payload);
@@ -49,10 +50,10 @@ export default new Vuex.Store({
           show: true,
           text: `You are successfully logged ${state.isLoggedIn ? "in" : "out"}.`,
         });
-
       }
     },
-    smackbar({ commit }, { // sets the snackbar's state
+    // sets the snackbar's state
+    smackbar({ commit }, { 
       show,
       text,
       btn: {
@@ -71,7 +72,8 @@ export default new Vuex.Store({
         }
       })
     },
-    findSymbol({ commit, dispatch }, payload) { // finds symbol by company name
+    // finds symbol by company name
+    findSymbol({ commit, dispatch }, payload) { 
       return axios.get("/query", {
         params: {
           keywords: payload,
@@ -82,11 +84,14 @@ export default new Vuex.Store({
         .then(resp => {
           if (resp.status === 200) {
 
+            // if api call restrictions are exeeded, throw an error then informs the user
             if(resp.data.Note) {
               throw new Error(resp.data.Note);
             }
 
             commit("SET_SYMBOLS", resp.data.bestMatches)
+
+            // if there is no result, informs the user
             if(resp.data.bestMatches.length === 0) {
               dispatch("smackbar", {
                 show: true,
@@ -103,7 +108,8 @@ export default new Vuex.Store({
           });
         })
     },
-    fetchTimeSeries({ commit, dispatch, state }, payload) { // fetches time series by symbol and interval
+    // fetches time series by symbol and interval
+    fetchTimeSeries({ commit, dispatch, state }, payload) { 
       state.isLoading = true
       return axios.get("/query", {
         params: {
@@ -115,6 +121,8 @@ export default new Vuex.Store({
       })
         .then(resp => {
           if (resp.status === 200) {
+
+            // if api call restrictions are exeeded, throw an error then informs the user
             if(resp.data.Note) {
               throw new Error(resp.data.Note);
             }
@@ -134,7 +142,7 @@ export default new Vuex.Store({
 
   },
   getters: {
-    // returns time series as formatted
+    // returns time series as formatted for chart
     getFormattedTimeSeries: (state) => (serie) => {
       let serieKey = ""
       serie = serie[0].toUpperCase() + serie.slice(1, serie.length)

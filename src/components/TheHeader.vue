@@ -12,14 +12,6 @@
       </v-app-bar-title>
 
       <v-spacer></v-spacer>
-<!-- 
-      <v-switch
-        v-model="$vuetify.theme.dark"
-        hint="This toggles the global state of the Vuetify theme"
-        inset
-        label="Vuetify Theme Dark"
-        persistent-hint
-      ></v-switch> -->
 
       <v-btn
         to="/"
@@ -92,7 +84,9 @@ export default {
   name: "TheHeader",
 
   data: () => ({
+    // selected authentication type from menu
     selectedItem: 0,
+    // auth types for setting the selected item
     authTypes: [
       false,
       true,
@@ -102,6 +96,7 @@ export default {
     ...mapState(["isLoggedIn"]),
   },
   watch: {
+    // redirects to home page if user is at the /admin path and not logged
     isLoggedIn(isLoggedIn) {
       if(!isLoggedIn && this.$route.path === "/admin") {
         this.$router.push("/");
@@ -109,6 +104,7 @@ export default {
     }
   },
   created() {
+    // sets the seelcted authentication type
     this.selectedItem = this.authTypes.indexOf(this.isLoggedIn);
   },
   methods: {

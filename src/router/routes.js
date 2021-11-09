@@ -22,7 +22,6 @@ export default [
     path: "",
     component: AdminLayout,
     meta: { middleware: "require-auth" },
-    // meta: { auth: true },
     children: [
       {
         path: '/admin',

@@ -31,6 +31,7 @@ export default {
     }
   },
   methods: {
+    // sets the dialog's info
     setDialog() {
       this.dialog = {
         show: true,

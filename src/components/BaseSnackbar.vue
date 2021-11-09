@@ -20,26 +20,9 @@ import { mapState } from "vuex"
 
 export default {
   name: 'BaseSnackbar',
-  data() {
-    return {
-      // data: {
-      //   state: false,
-      //   text: ""
-      // },
-    }
-  },
   computed: {
     ...mapState(["snackbar"]),
   },
-  // watch: {
-  //   'snackbar': {
-  //     handler(val) {
-  //       console.log(val);
-  //       this.data = val
-  //     },
-  //     deep: true,
-  //   }
-  // }
 };
 </script>
 

@@ -58,6 +58,7 @@ export default {
     }
   },
   methods: {
+    // hides the dialog
     close() {
       this.dialog.show = false
     }

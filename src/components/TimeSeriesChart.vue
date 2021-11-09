@@ -60,13 +60,13 @@ import { mapGetters } from "vuex";
 export default {
   name: "TimeSeriesChart",
   props: {
-    draw: Boolean,
-    serie: String,
-    symbol: Object
+    draw: Boolean, // chart drawing trigger
+    serie: String,  // serie info
+    symbol: Object  // symbol info
   },
   data() {
     return {
-      showSMA: false,
+      showSMA: false, // show simple moving average line in chart
 
       series: ["daily", "weekly", "monthly"],
       activeBtn: 0, // active serie selection btn
@@ -76,11 +76,13 @@ export default {
     ...mapGetters(["getFormattedTimeSeries"]),
   },
   watch: {
+    // wathes the draw trigger and draws the chart acoordingly
     draw(isDrawing) {
       if (isDrawing) {
         this.drawChart(this.getFormattedTimeSeries(this.serie));
       }
     },
+    // whatches the sma trigger and shows the sma graph in chart
     showSMA() {
       this.drawChart(this.getFormattedTimeSeries(this.serie))
     }
@@ -92,6 +94,7 @@ export default {
     }
   },
   methods: {
+    // draws the chart
     drawChart(data) {
       d3.selectAll("div#chart > *").remove();
 

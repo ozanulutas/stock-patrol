@@ -13,6 +13,7 @@ export default function(from, to, next, router, store) {
       }
     });
 
+    // if user is logging out from admin page, redirect to home page
     if(to.fullPath === "/admin") {
       router.push("/").catch(() => {})
     }

@@ -1,5 +1,6 @@
 import axios from "axios"
 
+// axios instance for api calls
 const axiosInstance = axios.create();
 
 // get values from .env

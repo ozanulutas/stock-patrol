@@ -9,7 +9,3 @@ export default {
   name: "AdminLayout",
 }
 </script>
-
-<style>
-
-</style>

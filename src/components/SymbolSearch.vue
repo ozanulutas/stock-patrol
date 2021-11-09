@@ -106,11 +106,13 @@ export default {
   },
   computed: {
     ...mapState(["symbols"]),
+
     isHomePage() {
       return this.$route.fullPath === "/";
     },
   },
   mounted() {
+    // gets the company from route query
     const company = this.$route.query.company;
 
     // if there is company url query, searches symbol by company name on refresh
@@ -122,6 +124,7 @@ export default {
   methods: {
     ...mapActions(["findSymbol"]),
 
+    // searches for symbol
     submit() {
       // checks the validity of the form
       if (!this.$refs.form.validate()) {
@@ -137,11 +140,12 @@ export default {
           },
         }).catch(() => {});
 
-        this.panels = [0]; // expand results panel
+        // expands the result's panel
+        this.panels = [0]; 
       })
     },
 
-    // searches the symbol and sets the loading state form form input
+    // searches the symbol and sets the loading state for form input
     searchSymbol() {
       this.isLoading = true;
 
@@ -162,11 +166,9 @@ export default {
         },
       });
 
-      this.panels = []; // close results panel
+      // close results panel
+      this.panels = []; 
     },
   },
 };
 </script>
-
-<style>
-</style>
