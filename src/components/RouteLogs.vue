@@ -35,7 +35,7 @@
 
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="(log, i) in logs"
+        v-for="(log, i) in showOnlyErrors ? filteredLogs : logs"
         :key="i"
       >
         <div class="d-flex align-center py-2">
@@ -75,14 +75,14 @@
           </p>
           <p>
               <b>
-                <v-icon class="mr-1" dense>mdi-key-outline</v-icon>
+                <v-icon class="mr-1 rotate-40" dense>mdi-key-outline</v-icon>
                 Is Authorized: 
               </b>
               {{ log.isLoggedIn.toString() | capitalize }}
           </p>
           <p v-if="log.error !== ''">
             <b>
-              <v-icon class="mr-1 rotate-40" dense>mdi-alert-circle-outline</v-icon>
+              <v-icon class="mr-1" dense>mdi-alert-circle-outline</v-icon>
               Error: 
             </b>
             {{ log.error }}
@@ -111,7 +111,7 @@ export default {
       // selected logs for deletion
       selectedLogs: [],
       // trigger for select all logs
-      selectAllLogs: false
+      selectAllLogs: false,
     };
   },
   watch: {
@@ -122,7 +122,7 @@ export default {
         this.deleteLogs();
         this.$emit("update:confirm-delete", false)
       }
-    }
+    },
   },
   methods: {
     ...mapActions(["smackbar"]),
