@@ -135,10 +135,10 @@ export default {
           query: {
             company: this.form.company,
           },
-        });
+        }).catch(() => {});
 
         this.panels = [0]; // expand results panel
-      });
+      })
     },
 
     // searches the symbol and sets the loading state form form input

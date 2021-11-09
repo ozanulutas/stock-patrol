@@ -9,6 +9,7 @@ const isLoggedIn = JSON.parse(localStorage.getItem("sp_is_logged_in"));
 
 export default new Vuex.Store({
   state: {
+    isLoading: false,
     isLoggedIn: isLoggedIn !== null ? isLoggedIn : false,  // indicates whether the user is authenticated or not
     symbols: [], // symbol search results
     timeSeries: {}, // time series for a symbol
@@ -71,7 +72,7 @@ export default new Vuex.Store({
       })
     },
     // TODO error handling when api request limit is over
-    findSymbol({ commit }, payload) { // finds symbol by company name
+    findSymbol({ commit, dispatch }, payload) { // finds symbol by company name
       return axios.get("/query", {
         params: {
           keywords: payload,
@@ -82,12 +83,30 @@ export default new Vuex.Store({
         .then(resp => {
           if (resp.status === 200) {
             console.log(resp.data, "symbol resp");
+
+            if(resp.data.Note) {
+              throw new Error(resp.data.Note);
+            }
+
             commit("SET_SYMBOLS", resp.data.bestMatches)
+            if(resp.data.bestMatches.length === 0) {
+              dispatch("smackbar", {
+                show: true,
+                text: "The results you were looking for were not found.",
+              });
+            }
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.log(err)
+          dispatch("smackbar", {
+            show: true,
+            text: "You have reached API call frequency. Please try again in one minute later.",
+          });
+        })
     },
-    fetchTimeSeries({ commit }, payload) { // fetches time series by symbol and interval
+    fetchTimeSeries({ commit, dispatch, state }, payload) { // fetches time series by symbol and interval
+      state.isLoading = true
       return axios.get("/query", {
         params: {
           symbol: payload.symbol,
@@ -99,10 +118,21 @@ export default new Vuex.Store({
         .then(resp => {
           console.log(resp.data, "series resp");
           if (resp.status === 200) {
+            if(resp.data.Note) {
+              throw new Error(resp.data.Note);
+            }
+
             commit("SET_TIME_SERIES", resp.data)
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.log(err)
+          dispatch("smackbar", {
+            show: true,
+            text: "You have reached API call frequency. Please try again in one minute later.",
+          });
+        })
+        .finally(() => state.isLoading = false)
     },
 
   },
@@ -125,7 +155,7 @@ export default new Vuex.Store({
         default:
           break;
       }
-      let timeSeries = state.timeSeries[serieKey].filter((serie, index) => index % 5 === 0)
+      let timeSeries = state.timeSeries[serieKey];
       console.log(timeSeries);
       // switch (serie) {
       //   case "Weekly":
