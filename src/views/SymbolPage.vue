@@ -2,12 +2,20 @@
   <div>
     <h1
       v-if="symbol"
-      class="my-5"
-    >{{ symbol["2. name"] }}</h1>
+      class="mt-8 mb-5"
+    >
+      {{ symbol["2. name"] }}
+      <span class="subtitle-1">
+        {{ symbol["1. symbol"] }}
+      </span>
+    </h1>
+    
+
 
     <TimeSeriesChart
       :draw="drawChart"
       :serie="serie"
+      :symbol="symbol"
       @set-serie="setSerie"
     />
   </div>

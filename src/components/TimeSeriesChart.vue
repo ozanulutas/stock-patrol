@@ -1,19 +1,42 @@
 <template>
   <v-card>
-    <v-card-text>
-      <v-btn-toggle
-        dark
-        v-model="activeBtn"
-      >
-        <v-btn
-          v-for="serie, i in series"
-          :key="i"
-          small
-          @click="$emit('set-serie', serie)"
+    <v-card-actions class="justify-space-between py-5 px-5">
+      <div class="d-flex align-center">
+        <v-btn-toggle
+          dark
+          v-model="activeBtn"
+          class="mr-5"
         >
-          {{ serie | capitalize}}
-        </v-btn>
-      </v-btn-toggle>
+          <v-btn
+            v-for="serie, i in series"
+            :key="i"
+            small
+            @click="$emit('set-serie', serie)"
+          >
+            {{ serie | capitalize}}
+          </v-btn>
+        </v-btn-toggle>
+
+        <v-switch
+          v-model="showSMA"
+          inset
+          :label="`${showSMA ? 'Hide' : 'Show'} SMA`"
+          hide-details
+          class="my-0 py-0"
+        ></v-switch>
+      </div>
+
+      <div class="subtitle-1">
+        {{ symbol["4. region"] }}
+        <v-icon>mdi-circle-small</v-icon>
+        {{ symbol["8. currency"] }}
+        <v-icon>mdi-circle-small</v-icon>
+        {{ symbol["5. marketOpen"] }} - 
+        {{ symbol["6. marketClose"] }}
+      </div>
+    </v-card-actions>
+    <v-divider></v-divider>
+    <v-card-text>
 
       <div id="chart"></div>
 
@@ -39,10 +62,11 @@ export default {
   props: {
     draw: Boolean,
     serie: String,
+    symbol: Object
   },
   data() {
     return {
-      showSma: false,
+      showSMA: false,
 
       series: ["daily", "weekly", "monthly"],
       activeBtn: 0, // active serie selection btn
@@ -57,6 +81,9 @@ export default {
         this.drawChart(this.getFormattedTimeSeries(this.serie));
       }
     },
+    showSMA() {
+      this.drawChart(this.getFormattedTimeSeries(this.serie))
+    }
   },
   created() {
     // set active btn according to serie
@@ -68,9 +95,9 @@ export default {
     drawChart(data) {
       d3.selectAll("div#chart > *").remove();
 
-      var width = 1300;
-      var height = 500;
-      var margin = 50;
+      const width = 1300;
+      const height = 500;
+      const margin = 50;
 
       function min(a, b) {
         return a < b ? a : b;
@@ -80,12 +107,12 @@ export default {
         return a > b ? a : b;
       }
 
-      var y = d3.scaleLinear().range([height - margin, margin]);
+      const y = d3.scaleLinear().range([height - margin, margin]);
 
-      var x = d3.scaleTime().range([margin, width - margin]);
+      const x = d3.scaleTime().range([margin, width - margin]);
 
       // line for the sma
-      var line1 = d3
+      const line1 = d3
         .line()
         .x(function (d) {
           return x(d["date"]);
@@ -103,7 +130,7 @@ export default {
         d.volume = +d.volume;
       });
 
-      var chart = d3
+      const chart = d3
         .select("div#chart")
         .append("svg")
         .attr("class", "chart")
@@ -233,14 +260,14 @@ export default {
         .style("stroke", "red")
         .attr("fill", "none")
         .attr("stroke-width", 1)
-        .classed("asd", false)
+        .classed("hide-sma", !this.showSMA)
     },
   },
 };
 </script>
 
 <style>
-.asd {
+.hide-sma {
   display: none;
 }
 </style>
