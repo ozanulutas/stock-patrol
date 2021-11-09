@@ -4,14 +4,33 @@
     dark
   >
     <v-container class="d-flex align-center">
-      <v-btn
-        to="/"
-      >Home</v-btn>
-      <v-btn
-        to="/admin"
-      >Admin</v-btn>
+      <v-app-bar-title>
+        <router-link to="/" class="d-flex align-center gap-0h reset-btn white--text">
+          <v-icon>mdi-chart-box</v-icon>
+          STOCK PATROL
+        </router-link>
+      </v-app-bar-title>
 
       <v-spacer></v-spacer>
+<!-- 
+      <v-switch
+        v-model="$vuetify.theme.dark"
+        hint="This toggles the global state of the Vuetify theme"
+        inset
+        label="Vuetify Theme Dark"
+        persistent-hint
+      ></v-switch> -->
+
+      <v-btn
+        to="/"
+      >
+        Home
+      </v-btn>
+      <v-btn
+        to="/admin"
+      >
+        Admin
+      </v-btn>
 
       <!-- menu -->
       <v-menu
@@ -22,7 +41,7 @@
         offset-y
       >
         <template v-slot:activator="{ on: menu, attrs }">
-          <v-tooltip left>
+          <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
               <v-btn
                 icon
@@ -35,9 +54,9 @@
             <span>Authentication</span>
           </v-tooltip>
         </template>
-
         <v-list dense>
           <v-subheader>AUTHENTICATION</v-subheader>
+          <v-divider></v-divider>
           <v-list-item-group
             v-model="selectedItem"
             color="primary"

@@ -1,22 +1,33 @@
 <template>
 <section>
-  <v-tooltip right>
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn 
-        color="error" 
-        fab
-        small
-        v-bind="attrs"
-        v-on="on"
-        @click="deleteLogs()" 
-      >
-        <v-icon>
-          mdi-delete
-        </v-icon>
-      </v-btn>
-    </template>
-    <span>Remove Selected Logs</span>
-  </v-tooltip>
+  <div class="d-flex justify-space-between my-3">
+    <v-checkbox
+      v-model="selectedAllLogs"
+      :input-value="true"
+      :false-value="false"
+      hide-details
+      class="shrink ml-3 mt-0 mb-1"
+      @change="toggleAllLogs"
+    ></v-checkbox> Select All
+    <v-tooltip left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn 
+          color="error" 
+          fab
+          small
+          v-bind="attrs"
+          v-on="on"
+          :disabled="selectedLogs.length === 0"
+          @click="$emit('delete-logs')" 
+        >
+          <v-icon>
+            mdi-delete
+          </v-icon>
+        </v-btn>
+      </template>
+      <span>Remove Selected Logs</span>
+    </v-tooltip>
+  </div>
 
   <v-expansion-panels>
       <v-expansion-panel
@@ -81,17 +92,40 @@
 <script>
 export default {
   name: "RouteLog",
+  props: {
+    confirmDelete: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       logs: JSON.parse(localStorage.getItem("sp_route_log")),
       selectedLogs: [],
+      selectedAllLogs: false
     };
+  },
+  watch: {
+    confirmDelete(isConfirmed) {
+      console.log(isConfirmed);
+      if(isConfirmed) {
+        this.deleteLogs();
+        this.$emit("update:confirm-delete", false)
+      }
+    }
   },
   methods: {
     deleteLogs() {
       this.logs = this.logs.filter(log => !this.selectedLogs.some(selectedLog => selectedLog === log.title))
-      this.selectedLogs = []
-      localStorage.setItem("sp_route_log", JSON.stringify(this.logs))
+      this.selectedLogs = [];
+      localStorage.setItem("sp_route_log", JSON.stringify(this.logs));
+    },
+    toggleAllLogs(toggle) {
+      if(toggle) {
+        this.selectedLogs = this.logs.map(log => log.title)
+      } else {
+        this.selectedLogs = []
+      }
     }
   }
 };

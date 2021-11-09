@@ -1,6 +1,10 @@
 @include gaps;
 @include flexes;
 
+.reset-btn {
+  @include reset-btn;
+}
+
 .rotate-40 {
   transform: rotate(40deg);
 }
