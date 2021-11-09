@@ -1,8 +1,8 @@
 <template>
 <section>
-  <div class="d-flex justify-space-between my-3">
+  <div v-if="logs.length > 0" class="d-flex justify-space-between my-3">
     <v-checkbox
-      v-model="selectedAllLogs"
+      v-model="selectAllLogs"
       :input-value="true"
       :false-value="false"
       hide-details
@@ -108,7 +108,7 @@ export default {
     return {
       logs: JSON.parse(localStorage.getItem("sp_route_log")),
       selectedLogs: [],
-      selectedAllLogs: false
+      selectAllLogs: false
     };
   },
   watch: {
@@ -124,8 +124,10 @@ export default {
 
     deleteLogs() {
       this.logs = this.logs.filter(log => !this.selectedLogs.some(selectedLog => selectedLog === log.title))
-      this.selectedLogs = [];
       localStorage.setItem("sp_route_log", JSON.stringify(this.logs));
+      
+      this.selectedLogs = [];
+      this.selectAllLogs = false;
 
       this.smackbar({
         show: true,

@@ -70,6 +70,7 @@ export default new Vuex.Store({
         }
       })
     },
+    // TODO error handling when api request limit is over
     findSymbol({ commit }, payload) { // finds symbol by company name
       return axios.get("/query", {
         params: {
@@ -124,8 +125,19 @@ export default new Vuex.Store({
         default:
           break;
       }
-      const timeSeries = state.timeSeries[serieKey]
+      let timeSeries = state.timeSeries[serieKey].filter((serie, index) => index % 5 === 0)
       console.log(timeSeries);
+      // switch (serie) {
+      //   case "Weekly":
+      //     timeSeries = timeSeries.filter((serie, index) => index % 5 === 0)
+      //     break;
+      //   case "Monthly":
+      //     timeSeries = timeSeries.filter((serie, index) => index % 5 === 0)
+      //     break;
+      //   default:
+      //     break;
+      // }
+      // console.log(timeSeries);
 
       return Object.keys(timeSeries).map(key => {
         return {

@@ -26,6 +26,7 @@ export default {
   watch: {
     draw(isDrawing) {
       if (isDrawing) {
+        console.log(this.getFormattedTimeSeries(this.serie));
         this.drawChart(this.getFormattedTimeSeries(this.serie), {
           date: (d) => new Date(d.date),
           high: (d) => d.high,
