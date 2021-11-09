@@ -5,23 +5,10 @@
       class="my-5"
     >{{ symbol["2. name"] }}</h1>
 
-    <v-btn-toggle
-      dark
-      v-model="activeBtn"
-    >
-      <v-btn
-        v-for="serie, i in series"
-        :key="i"
-        small
-        @click="setSerie(serie)"
-      >
-        {{ serie | capitalize}}
-      </v-btn>
-    </v-btn-toggle>
-
     <TimeSeriesChart
       :draw="drawChart"
       :serie="serie"
+      @set-serie="setSerie"
     />
   </div>
 </template>
@@ -39,8 +26,6 @@ export default {
     return {
       drawChart: false,
       serie: "daily", // time serie
-      series: ["daily", "weekly", "monthly"],
-      activeBtn: 0, // active serie selection btn
       symbol: JSON.parse(localStorage.getItem("sp_symbol")),
     };
   },
@@ -74,8 +59,6 @@ export default {
     const serie = this.$route.query.serie;
     if (serie) {
       this.serie = serie;
-      // set active btn according to serie
-      this.activeBtn = this.series.indexOf(serie)
     }
 
     // fetch the series

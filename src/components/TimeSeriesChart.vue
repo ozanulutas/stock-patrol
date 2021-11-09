@@ -1,8 +1,22 @@
 <template>
   <v-card>
     <v-card-text>
-      <!-- <div id="btn-container"></div> -->
+      <v-btn-toggle
+        dark
+        v-model="activeBtn"
+      >
+        <v-btn
+          v-for="serie, i in series"
+          :key="i"
+          small
+          @click="$emit('set-serie', serie)"
+        >
+          {{ serie | capitalize}}
+        </v-btn>
+      </v-btn-toggle>
+
       <div id="chart"></div>
+
       <v-overlay
         absolute
         :value="$store.state.isLoading"
@@ -29,6 +43,9 @@ export default {
   data() {
     return {
       showSma: false,
+
+      series: ["daily", "weekly", "monthly"],
+      activeBtn: 0, // active serie selection btn
     };
   },
   computed: {
@@ -42,6 +59,12 @@ export default {
         this.drawChart(this.getFormattedTimeSeries(this.serie));
       }
     },
+  },
+  created() {
+    // set active btn according to serie
+    if(this.serie) {
+      this.activeBtn = this.series.indexOf(this.serie)
+    }
   },
   methods: {
     drawChart(data) {
