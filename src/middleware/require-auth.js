@@ -14,9 +14,9 @@ export default function(from, to, next, router, store) {
     });
 
     if(to.fullPath === "/admin") {
-      router.push("/")
+      router.push("/").catch(() => {})
     }
-    
+
     return "Unauthorized Access"
   } else {
     next();
