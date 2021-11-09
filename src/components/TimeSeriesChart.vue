@@ -54,8 +54,6 @@ export default {
   watch: {
     draw(isDrawing) {
       if (isDrawing) {
-        const timeSeries = this.getFormattedTimeSeries(this.serie);
-        console.log("timeSeries", timeSeries);
         this.drawChart(this.getFormattedTimeSeries(this.serie));
       }
     },
