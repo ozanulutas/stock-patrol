@@ -1,18 +1,15 @@
 <template>
   <v-app-bar
     app
-    color="primary"
     dark
   >
     <v-container class="d-flex align-center">
-      <router-link
-        style="color: white"
+      <v-btn
         to="/"
-      >Home</router-link> |
-      <router-link
-        style="color: white"
+      >Home</v-btn>
+      <v-btn
         to="/admin"
-      >Admin</router-link>
+      >Admin</v-btn>
 
       <v-spacer></v-spacer>
 

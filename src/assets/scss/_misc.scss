@@ -1,2 +1,6 @@
 @include gaps;
 @include flexes;
+
+.rotate-40 {
+  transform: rotate(40deg);
+}
