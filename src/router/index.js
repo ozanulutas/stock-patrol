@@ -13,15 +13,17 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
+  console.log(from, to);
   let logError = ""; // error on route visits
   let log = JSON.parse(localStorage.getItem("sp_route_log")) || []; // old log from local storage
 
   // if route has meta midlleware calls the specific meiddleware to action
   const { meta: { middleware } = {} } = to.matched.find(record => record.meta.middleware) || {}
+
   if (middleware) {
     const middlewareModule = require(`@/middleware/${middleware}`);
     if(middlewareModule) {
-      logError = middlewareModule.default(next, store);
+      logError = middlewareModule.default(from, to, next, router, store);
     } else {
       next()
     }
@@ -42,6 +44,5 @@ router.beforeEach((to, from, next) => {
   
   log = [];
 })
-
 
 export default router

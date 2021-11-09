@@ -1,6 +1,7 @@
 // if route requires authentication and user is not authenticated, prevent access
 // returns error name for logging
-export default function(next, store) {
+export default function(from, to, next, router, store) {
+
   if (!store.state.isLoggedIn) {
     store.dispatch("smackbar", {
       show: true,
@@ -12,6 +13,10 @@ export default function(next, store) {
       }
     });
 
+    if(to.fullPath === "/admin") {
+      router.push("/")
+    }
+    
     return "Unauthorized Access"
   } else {
     next();
