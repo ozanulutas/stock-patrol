@@ -6,7 +6,7 @@
 :bomb::boom: [Project Link](https://stock-patrol.vercel.app/)
 
 Stock value wathing app created with Vue.js and Vuetify.
-You can search for a company logo and display the stock value changes in candlestick (D3) chart with monthly, weekly and daily time series options. 
+You can search for a company logo and display the stock value changes in candlestick chart (D3) with monthly, weekly and daily time series options. 
 
 
 ## Table of Contents
