@@ -17,7 +17,7 @@
           v-if="dialog.btn && dialog.btn.cancel"
           color="primary"
           text
-          @click="$emit('cancel', dialog.btn.cancel.handler) || close()"
+          @click="dialog.btn.cancel.handler ? $emit('cancel', dialog.btn.cancel.handler) : close()"
         >
           {{ dialog.btn.cancel.text || "CANCEL" }}
         </v-btn>
@@ -25,7 +25,7 @@
           v-if="dialog.btn && dialog.btn.confirm"
           color="primary"
           text
-          @click="$emit('confirm', dialog.btn.confirm.handler) || close()"
+          @click="dialog.btn.confirm.handler ? $emit('confirm', dialog.btn.confirm.handler) : close()"
         >
           {{ dialog.btn.confirm.text || "CONFIRM" }}
         </v-btn>
@@ -55,10 +55,6 @@ export default {
           },
         }
       })
-    }
-  },
-  data () {
-    return {
     }
   },
   methods: {

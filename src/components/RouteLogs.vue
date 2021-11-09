@@ -94,6 +94,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
+
 export default {
   name: "RouteLog",
   props: {
@@ -111,7 +113,6 @@ export default {
   },
   watch: {
     confirmDelete(isConfirmed) {
-      console.log(isConfirmed);
       if(isConfirmed) {
         this.deleteLogs();
         this.$emit("update:confirm-delete", false)
@@ -119,10 +120,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["smackbar"]),
+
     deleteLogs() {
       this.logs = this.logs.filter(log => !this.selectedLogs.some(selectedLog => selectedLog === log.title))
       this.selectedLogs = [];
       localStorage.setItem("sp_route_log", JSON.stringify(this.logs));
+
+      this.smackbar({
+        show: true,
+        text: "Logs are succesfully deleted.",
+        btn: {
+          close: {
+            color: "blue"
+          }
+        }
+      });
     },
     toggleAllLogs(toggle) {
       if(toggle) {
