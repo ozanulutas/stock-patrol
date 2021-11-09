@@ -85,6 +85,13 @@ export default {
   computed: {
     ...mapState(["isLoggedIn"]),
   },
+  watch: {
+    isLoggedIn(isLoggedIn) {
+      if(!isLoggedIn && this.$route.path === "/admin") {
+        this.$router.push("/");
+      } 
+    }
+  },
   created() {
     this.selectedItem = this.authTypes.indexOf(this.isLoggedIn);
   },

@@ -41,11 +41,14 @@ export default new Vuex.Store({
       // if authentication state is change show snackbar
       if (payload !== state.isLoggedIn) {
         commit("SET_IS_LOGGED_IN", payload);
+
         localStorage.setItem("sp_is_logged_in", payload)
+
         dispatch("smackbar", {
           show: true,
           text: `You are successfully logged ${state.isLoggedIn ? "in" : "out"}.`,
         });
+
       }
     },
     smackbar({ commit }, { // sets the snackbar's state
