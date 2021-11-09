@@ -8,7 +8,11 @@
       hide-details
       class="shrink ml-3 mt-0 mb-1"
       @change="toggleAllLogs"
-    ></v-checkbox> Select All
+    >
+      <template v-slot:label>
+        Select All
+      </template>
+    </v-checkbox>
     <v-tooltip left>
       <template v-slot:activator="{ on, attrs }">
         <v-btn 

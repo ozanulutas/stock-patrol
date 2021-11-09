@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Logs</h1>
+    <h1 class="mb-2">Logs</h1>
     <v-divider></v-divider>
     <RouteLogs
       :confirm-delete.sync="confirmDelete"

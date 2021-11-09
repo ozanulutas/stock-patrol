@@ -17,7 +17,7 @@
           v-if="dialog.btn && dialog.btn.cancel"
           color="primary"
           text
-          @click="dialog.btn.cancel.handler || close()"
+          @click="$emit('cancel', dialog.btn.cancel.handler) || close()"
         >
           {{ dialog.btn.cancel.text || "CANCEL" }}
         </v-btn>
@@ -27,7 +27,6 @@
           text
           @click="$emit('confirm', dialog.btn.confirm.handler) || close()"
         >
-          <!-- @click="dialog.btn.confirm.handler || close()" -->
           {{ dialog.btn.confirm.text || "CONFIRM" }}
         </v-btn>
       </v-card-actions>
