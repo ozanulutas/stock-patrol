@@ -1,7 +1,7 @@
 <template>
   <v-card>
-    <v-card-actions class="justify-space-between py-5 px-5">
-      <div class="d-flex align-center">
+    <v-card-actions class="justify-space-between flex-wrap gap-1 py-5 px-5">
+      <div class="d-flex align-center flex-wrap gap-1">
         <v-btn-toggle
           dark
           v-model="activeBtn"
